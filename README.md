@@ -65,11 +65,7 @@ mini-crm/
 └── .gitignore
 ```
 
-## Screenshots
 
-_Add screenshots here after running the app locally — e.g. `/screenshots/dashboard.png`, `/screenshots/leads.png`, `/screenshots/contact.png`._
-
----
 
 ## Installation
 

@@ -83,7 +83,7 @@ const getLeadById = async (req, res, next) => {
 // @access  Private
 const updateLead = async (req, res, next) => {
   try {
-    const { name, email, phone, company, message, source, status } = req.body;
+    const { name, email, phone, company, message, source, status, followUpDate } = req.body;
 
     const lead = await Lead.findById(req.params.id);
     if (!lead) {
@@ -97,6 +97,7 @@ const updateLead = async (req, res, next) => {
     if (message !== undefined) lead.message = message;
     if (source !== undefined) lead.source = source;
     if (status !== undefined) lead.status = status;
+    if (followUpDate !== undefined) lead.followUpDate = followUpDate ? new Date(followUpDate) : null;
 
     await lead.save();
 
@@ -126,7 +127,7 @@ const deleteLead = async (req, res, next) => {
 const updateLeadStatus = async (req, res, next) => {
   try {
     const { status } = req.body;
-    const validStatuses = ['New', 'Contacted', 'Converted'];
+    const validStatuses = ['New', 'Contacted', 'Converted', 'Follow-up', 'Lost'];
 
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ success: false, message: 'Invalid status value' });
@@ -139,8 +140,8 @@ const updateLeadStatus = async (req, res, next) => {
 
     lead.status = status;
 
-    // Automatically stamp lastContactedAt when moving to Contacted
-    if (status === 'Contacted') {
+    // Automatically stamp lastContactedAt when moving to Contacted or Follow-up
+    if (status === 'Contacted' || status === 'Follow-up') {
       lead.lastContactedAt = new Date();
     }
 
@@ -176,15 +177,35 @@ const addNote = async (req, res, next) => {
   }
 };
 
+// @route   DELETE /api/leads/:id/notes/:noteId
+// @access  Private
+const deleteNote = async (req, res, next) => {
+  try {
+    const lead = await Lead.findById(req.params.id);
+    if (!lead) {
+      return res.status(404).json({ success: false, message: 'Lead not found' });
+    }
+
+    lead.notes = lead.notes.filter((note) => note._id.toString() !== req.params.noteId);
+    await lead.save();
+
+    res.status(200).json({ success: true, message: 'Note deleted successfully', data: lead });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @route   GET /api/leads/analytics/summary
 // @access  Private
 const getAnalytics = async (req, res, next) => {
   try {
-    const [total, newCount, contacted, converted] = await Promise.all([
+    const [total, newCount, contacted, converted, followUp, lost] = await Promise.all([
       Lead.countDocuments({}),
       Lead.countDocuments({ status: 'New' }),
       Lead.countDocuments({ status: 'Contacted' }),
       Lead.countDocuments({ status: 'Converted' }),
+      Lead.countDocuments({ status: 'Follow-up' }),
+      Lead.countDocuments({ status: 'Lost' }),
     ]);
 
     const conversionRate = total > 0 ? ((converted / total) * 100).toFixed(1) : '0.0';
@@ -196,6 +217,8 @@ const getAnalytics = async (req, res, next) => {
         new: newCount,
         contacted,
         converted,
+        followUp,
+        lost,
         conversionRate: Number(conversionRate),
       },
     });
@@ -212,5 +235,6 @@ module.exports = {
   deleteLead,
   updateLeadStatus,
   addNote,
+  deleteNote,
   getAnalytics,
 };

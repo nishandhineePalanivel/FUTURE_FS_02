@@ -9,6 +9,7 @@ const {
   deleteLead,
   updateLeadStatus,
   addNote,
+  deleteNote,
   getAnalytics,
 } = require('../controllers/leadController');
 
@@ -23,5 +24,6 @@ router.put('/:id', protect, updateLead);
 router.delete('/:id', protect, deleteLead);
 router.patch('/:id/status', protect, updateLeadStatus);
 router.post('/:id/notes', protect, addNote);
+router.delete('/:id/notes/:noteId', protect, deleteNote);
 
 module.exports = router;

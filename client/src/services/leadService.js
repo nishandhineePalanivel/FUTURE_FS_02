@@ -37,6 +37,11 @@ export const addNote = async (id, text) => {
   return data;
 };
 
+export const deleteNote = async (id, noteId) => {
+  const { data } = await api.delete(`/leads/${id}/notes/${noteId}`);
+  return data;
+};
+
 export const getAnalytics = async () => {
   const { data } = await api.get('/leads/analytics/summary');
   return data;

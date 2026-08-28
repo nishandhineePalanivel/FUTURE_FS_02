@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { Boxes, Mail, Lock, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
@@ -100,6 +100,13 @@ const LoginPage = () => {
             )}
           </button>
         </form>
+
+        <p style={{ textAlign: 'center', marginTop: '18px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+          Looking for the customer inquiry form?{' '}
+          <Link to="/contact" style={{ color: 'var(--primary)', fontWeight: 600 }}>
+            Contact Form
+          </Link>
+        </p>
       </div>
     </div>
   );

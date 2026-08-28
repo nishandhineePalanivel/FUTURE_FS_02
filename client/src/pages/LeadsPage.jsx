@@ -11,7 +11,7 @@ import EditLeadModal from '../components/EditLeadModal';
 import { getLeads, deleteLead } from '../services/leadService';
 import { useToast } from '../context/ToastContext';
 
-const STATUS_OPTIONS = ['All', 'New', 'Contacted', 'Converted'];
+const STATUS_OPTIONS = ['All', 'New', 'Contacted', 'Converted', 'Follow-up', 'Lost'];
 const SOURCE_OPTIONS = ['All', 'Website', 'LinkedIn', 'Referral', 'Instagram', 'Other'];
 
 const LeadsPage = () => {
@@ -119,6 +119,7 @@ const LeadsPage = () => {
                 <tr>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Phone</th>
                   <th>Company</th>
                   <th>Source</th>
                   <th>Status</th>
@@ -131,6 +132,7 @@ const LeadsPage = () => {
                   <tr key={lead._id}>
                     <td data-label="Name">{lead.name}</td>
                     <td data-label="Email">{lead.email}</td>
+                    <td data-label="Phone">{lead.phone || '—'}</td>
                     <td data-label="Company">{lead.company || '—'}</td>
                     <td data-label="Source">{lead.source}</td>
                     <td data-label="Status">

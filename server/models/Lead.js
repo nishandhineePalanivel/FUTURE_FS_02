@@ -57,10 +57,14 @@ const leadSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['New', 'Contacted', 'Converted'],
+      enum: ['New', 'Contacted', 'Converted', 'Follow-up', 'Lost'],
       default: 'New',
     },
     notes: [noteSchema],
+    followUpDate: {
+      type: Date,
+      default: null,
+    },
     lastContactedAt: {
       type: Date,
       default: null,

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Boxes, User, Mail, Phone, Building2, MessageSquare, Send, CheckCircle2 } from 'lucide-react';
 import { submitLead } from '../services/leadService';
 
@@ -30,6 +31,9 @@ const ContactPage = () => {
       newErrors.email = 'Email is required';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = 'Please enter a valid email address';
+    }
+    if (form.phone.trim() && !/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]{6,15}$/.test(form.phone.trim())) {
+      newErrors.phone = 'Please enter a valid phone number';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -124,8 +128,10 @@ const ContactPage = () => {
                     value={form.phone}
                     onChange={handleChange}
                     placeholder="+1 555 000 0000"
+                    className={errors.phone ? 'input-error' : ''}
                   />
                 </div>
+                {errors.phone && <span className="field-error">{errors.phone}</span>}
               </div>
             </div>
 
@@ -180,6 +186,13 @@ const ContactPage = () => {
             </button>
           </form>
         )}
+
+        <p style={{ textAlign: 'center', marginTop: '18px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+          Are you an admin?{' '}
+          <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 600 }}>
+            Admin Login
+          </Link>
+        </p>
       </div>
     </div>
   );

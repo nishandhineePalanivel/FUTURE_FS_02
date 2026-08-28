@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Mail, Phone, Building2, Calendar, Clock, Tag, MessageSquare, Plus } from 'lucide-react';
+import { ArrowLeft, Mail, Phone, Building2, Calendar, Clock, Tag, MessageSquare, Plus, Trash2, CalendarDays } from 'lucide-react';
 import AdminLayout from '../components/AdminLayout';
 import LoadingSpinner from '../components/LoadingSpinner';
 import StatusBadge from '../components/StatusBadge';
-import { getLeadById, updateLeadStatus, addNote } from '../services/leadService';
+import { getLeadById, updateLeadStatus, updateLead, addNote, deleteNote } from '../services/leadService';
 import { useToast } from '../context/ToastContext';
 
-const STATUSES = ['New', 'Contacted', 'Converted'];
+const STATUSES = ['New', 'Contacted', 'Converted', 'Follow-up', 'Lost'];
 
 const LeadDetailsPage = () => {
   const { id } = useParams();
@@ -19,12 +19,18 @@ const LeadDetailsPage = () => {
   const [statusSaving, setStatusSaving] = useState(false);
   const [noteText, setNoteText] = useState('');
   const [noteSaving, setNoteSaving] = useState(false);
+  const [followUpDate, setFollowUpDate] = useState('');
 
   const fetchLead = async () => {
     setLoading(true);
     try {
       const res = await getLeadById(id);
       setLead(res.data);
+      if (res.data.followUpDate) {
+        setFollowUpDate(new Date(res.data.followUpDate).toISOString().split('T')[0]);
+      } else {
+        setFollowUpDate('');
+      }
     } catch (error) {
       showToast(error.response?.data?.message || 'Failed to load lead', 'error');
       navigate('/leads');
@@ -52,6 +58,18 @@ const LeadDetailsPage = () => {
     }
   };
 
+  const handleFollowUpDateChange = async (e) => {
+    const newDate = e.target.value;
+    setFollowUpDate(newDate);
+    try {
+      const res = await updateLead(id, { followUpDate: newDate ? newDate : null });
+      setLead(res.data);
+      showToast('Follow-up date updated', 'success');
+    } catch (error) {
+      showToast(error.response?.data?.message || 'Failed to update follow-up date', 'error');
+    }
+  };
+
   const handleAddNote = async (e) => {
     e.preventDefault();
     if (!noteText.trim()) return;
@@ -69,6 +87,16 @@ const LeadDetailsPage = () => {
     }
   };
 
+  const handleDeleteNote = async (noteId) => {
+    try {
+      const res = await deleteNote(id, noteId);
+      setLead(res.data);
+      showToast('Note deleted', 'success');
+    } catch (error) {
+      showToast(error.response?.data?.message || 'Failed to delete note', 'error');
+    }
+  };
+
   const formatDateTime = (dateStr) =>
     dateStr
       ? new Date(dateStr).toLocaleString('en-US', {
@@ -79,6 +107,15 @@ const LeadDetailsPage = () => {
           minute: '2-digit',
         })
       : '—';
+
+  const formatDateOnly = (dateStr) =>
+    dateStr
+      ? new Date(dateStr).toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric',
+        })
+      : 'None scheduled';
 
   if (loading || !lead) {
     return (
@@ -153,15 +190,30 @@ const LeadDetailsPage = () => {
           <div className="info-row">
             <Calendar size={16} />
             <div>
-              <span className="info-label">Created</span>
+              <span className="info-label">Created Date</span>
               <span className="info-value">{formatDateTime(lead.createdAt)}</span>
             </div>
           </div>
           <div className="info-row">
             <Clock size={16} />
             <div>
-              <span className="info-label">Last Contacted</span>
-              <span className="info-value">{formatDateTime(lead.lastContactedAt)}</span>
+              <span className="info-label">Updated Date</span>
+              <span className="info-value">{formatDateTime(lead.updatedAt)}</span>
+            </div>
+          </div>
+          <div className="info-row">
+            <CalendarDays size={16} />
+            <div style={{ width: '100%' }}>
+              <span className="info-label">Follow-up Date</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
+                <span className="info-value">{formatDateOnly(lead.followUpDate)}</span>
+                <input
+                  type="date"
+                  value={followUpDate}
+                  onChange={handleFollowUpDateChange}
+                  style={{ fontSize: '12px', padding: '4px 8px', borderRadius: '6px', border: '1px solid #d1d5db' }}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -194,11 +246,20 @@ const LeadDetailsPage = () => {
         ) : (
           <ul className="notes-list">
             {[...lead.notes]
-              .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .map((note) => (
-                <li key={note._id} className="note-item">
-                  <p>{note.text}</p>
-                  <span className="note-date">{formatDateTime(note.createdAt)}</span>
+                <li key={note._id} className="note-item" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <div>
+                    <p>{note.text}</p>
+                    <span className="note-date">{formatDateTime(note.createdAt)}</span>
+                  </div>
+                  <button
+                    onClick={() => handleDeleteNote(note._id)}
+                    title="Delete note"
+                    style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer', padding: '4px' }}
+                  >
+                    <Trash2 size={15} />
+                  </button>
                 </li>
               ))}
           </ul>

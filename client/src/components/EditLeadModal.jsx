@@ -4,7 +4,7 @@ import { updateLead } from '../services/leadService';
 import { useToast } from '../context/ToastContext';
 
 const SOURCES = ['Website', 'LinkedIn', 'Referral', 'Instagram', 'Other'];
-const STATUSES = ['New', 'Contacted', 'Converted'];
+const STATUSES = ['New', 'Contacted', 'Converted', 'Follow-up', 'Lost'];
 
 // Modal used to edit an existing lead's core details from the Leads table.
 const EditLeadModal = ({ lead, onClose, onSaved }) => {
@@ -23,6 +23,7 @@ const EditLeadModal = ({ lead, onClose, onSaved }) => {
         message: lead.message || '',
         source: lead.source || 'Website',
         status: lead.status || 'New',
+        followUpDate: lead.followUpDate ? new Date(lead.followUpDate).toISOString().split('T')[0] : '',
       });
       setErrors({});
     }
@@ -113,6 +114,11 @@ const EditLeadModal = ({ lead, onClose, onSaved }) => {
                 ))}
               </select>
             </div>
+          </div>
+
+          <div className="form-group">
+            <label>Follow-up Date</label>
+            <input type="date" name="followUpDate" value={form.followUpDate} onChange={handleChange} />
           </div>
 
           <div className="form-group">

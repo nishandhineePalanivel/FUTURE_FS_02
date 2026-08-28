@@ -11,7 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/contact" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/login" element={<LoginPage />} />
 

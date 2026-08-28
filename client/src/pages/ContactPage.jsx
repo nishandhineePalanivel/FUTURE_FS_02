@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Boxes, User, Mail, Phone, Building2, MessageSquare, Send, CheckCircle2 } from 'lucide-react';
 import { submitLead } from '../services/leadService';
 
@@ -185,6 +186,13 @@ const ContactPage = () => {
             </button>
           </form>
         )}
+
+        <p style={{ textAlign: 'center', marginTop: '18px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+          Are you an admin?{' '}
+          <Link to="/login" style={{ color: 'var(--primary)', fontWeight: 600 }}>
+            Admin Login
+          </Link>
+        </p>
       </div>
     </div>
   );

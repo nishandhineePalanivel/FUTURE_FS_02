@@ -36,133 +36,95 @@ Admins can log in securely using JWT authentication to view real-time lead analy
 
 ---
 
-## Project Structure
-
-```text
-mini-crm/
-├── client/                     # Frontend React Application
-│   ├── public/
-│   ├── src/
-│   │   ├── components/        # Reusable UI components (Sidebar, Header, Modals, Badges)
-│   │   ├── context/           # React Context (AuthContext, ToastContext)
-│   │   ├── pages/             # Page Views (ContactPage, LoginPage, DashboardPage, LeadsPage, LeadDetailsPage)
-│   │   ├── services/          # Axios API service instances (leadService, authService)
-│   │   ├── App.jsx            # Application Router & Protected Routes
-│   │   ├── main.jsx           # Application Entry Point
-│   │   └── index.css          # Core Styling Tokens & Component Styles
-│   ├── index.html
-│   ├── package.json
-│   ├── vercel.json            # Vercel SPA Routing Configuration
-│   └── vite.config.js
+🛠️ Tech Stack
+Frontend
+React.js
+Vite
+React Router
+Axios
+Lucide React
+CSS
+Backend
+Node.js
+Express.js
+Mongoose
+Database
+MongoDB Atlas
+Authentication
+JSON Web Tokens (JWT)
+Bcrypt.js
+Deployment
+Vercel – Frontend
+Render – Backend
+📂 Repository
+FUTURE_FS_02/
+├── client/
+│   └── React frontend
 │
-└── server/                     # Backend Node/Express API
-    ├── config/                # Database Connection (db.js)
-    ├── controllers/           # Route Controllers (authController.js, leadController.js)
-    ├── middleware/            # JWT Auth Middleware & Error Handler
-    ├── models/                # Mongoose Schemas (Admin.js, Lead.js)
-    ├── routes/                # API Endpoints (authRoutes.js, leadRoutes.js)
-    ├── utils/                 # Utility Scripts (generateToken.js, createAdmin.js)
-    ├── package.json
-    └── server.js              # Express App Server Entry
-```
+├── server/
+│   └── Node.js + Express backend
+│
+├── README.md
+├── package.json
+└── vercel.json
 
----
 
-## Environment Variables
-
-### Backend (`server/.env`)
-```env
-PORT=5000
-MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/minicrm?retryWrites=true&w=majority
-JWT_SECRET=your_jwt_secret_key_here
-ADMIN_EMAIL=admin@example.com
-ADMIN_PASSWORD=your_secure_admin_password
-CLIENT_URL=https://your-frontend-domain.vercel.app
-```
-
-### Frontend (`client/.env`)
-```env
-VITE_API_URL=https://your-backend-api.onrender.com/api
-```
-
-> **Note**: Never commit `.env` files or secret values to version control.
-
----
-
-## Installation & Local Development
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/your-username/mini-crm.git
-cd mini-crm
-```
-
-### 2. Setup Backend Server
-```bash
+⚙️ Local Setup
+Clone the repository
+git clone https://github.com/nishandhineePalanivel/FUTURE_FS_02.git
+cd FUTURE_FS_02
+Backend Setup
 cd server
 npm install
-
-# Create initial admin user in MongoDB
 npm run create-admin
-
-# Start development server
 npm run dev
-```
+Frontend Setup
 
-### 3. Setup Frontend Client
-```bash
-cd ../client
+Open another terminal:
+
+cd client
 npm install
-
-# Start Vite development server
 npm run dev
-```
 
-The frontend will run at `http://localhost:5173` and the API backend at `http://localhost:5000`.
+Frontend:
 
----
+http://localhost:5173
 
-## API Endpoints
+Backend:
 
-### Public Endpoints
-- `POST /api/leads` - Submit a new customer inquiry.
+http://localhost:5000
+🔐 Environment Variables
 
-### Authentication Endpoints
-- `POST /api/auth/login` - Admin login, returns JWT token.
-- `GET /api/auth/me` - Verify current JWT token and admin identity.
+Create server/.env:
 
-### Protected Lead Management Endpoints *(Requires `Authorization: Bearer <token>`)*
-- `GET /api/leads/analytics/summary` - Fetch dashboard statistics.
-- `GET /api/leads` - Get leads list (Supports query params: `search`, `status`, `source`, `page`, `limit`).
-- `GET /api/leads/:id` - Get details for a single lead.
-- `PUT /api/leads/:id` - Update lead fields (`name`, `email`, `phone`, `company`, `message`, `source`, `status`, `followUpDate`).
-- `PATCH /api/leads/:id/status` - Quick update lead status.
-- `POST /api/leads/:id/notes` - Add a follow-up note to a lead.
-- `DELETE /api/leads/:id/notes/:noteId` - Delete a note from a lead.
-- `DELETE /api/leads/:id` - Delete a lead record.
+PORT=5000
+MONGO_URI=<your-mongodb-connection-string>
+JWT_SECRET=<your-secret-key>
+ADMIN_EMAIL=<your-admin-email>
+ADMIN_PASSWORD=<your-admin-password>
+CLIENT_URL=https://mini-crm-lake.vercel.app
 
----
+Create client/.env:
 
-## Admin Credentials Configuration
+VITE_API_URL=<your-deployed-render-api-url>/api
 
-Admin credentials are created securely via backend environment variables.
-Run the script `npm run create-admin` inside the `server/` directory:
-1. Specify `ADMIN_EMAIL` and `ADMIN_PASSWORD` in `server/.env`.
-2. Execute `npm run create-admin`.
-3. The script hashes the password with `bcryptjs` (10 rounds) and stores the admin in MongoDB.
+Never commit .env files or passwords, API keys, database credentials, or JWT secrets to GitHub.
 
----
+📋 Future Interns Task 2 Requirements
+Requirement	Implementation
+Backend system	Node.js + Express.js REST API
+Frontend dashboard	React.js CRM dashboard
+Database	MongoDB Atlas
+Lead listing	Lead management table
+Lead status	New, Contacted, Converted
+Follow-ups	Follow-up dates and notes
+Admin access	JWT authentication
+Search & filtering	Lead search and filters
+Analytics	Lead and conversion statistics
+Timestamp tracking	Created/updated timestamps
+👩‍💻 Developed By
 
-## Deployment Instructions
+Nishandhinee Palanivel
 
-### Frontend (Vercel)
-1. Import the `client/` folder to Vercel.
-2. Set Environment Variable: `VITE_API_URL` pointing to your deployed backend URL (e.g. `https://your-app.onrender.com/api`).
-3. Deploy. The included `vercel.json` ensures client-side routing works seamlessly without 404s.
-
-### Backend (Render / Railway)
-1. Import the `server/` folder to Render Web Service.
-2. Set Environment Variables (`MONGO_URI`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `CLIENT_URL`).
-3. Build Command: `npm install`
-4. Start Command: `node server.js`
-5. Execute `node utils/createAdmin.js` (or via environment auto-creation) to set up your initial admin.
+Electronics and Communication Engineering
+Full Stack Web Development – Future Interns Task 2

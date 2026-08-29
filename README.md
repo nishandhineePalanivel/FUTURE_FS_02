@@ -1,12 +1,10 @@
-🚀 Client Lead Management System (Mini CRM)
+Client Lead Management System (Mini CRM)
 
-A full-stack Client Lead Management System (Mini CRM) developed for Future Interns – Full Stack Web Development Task 2 (2026).
+A full-stack Client Lead Management System developed for Future Interns – Full Stack Web Development Task 2 (2026).
 
-The application helps businesses collect, manage, track, and convert customer leads through a secure admin dashboard.
+Live Demo
 
-🌐 Live Demo
-
-Frontend:
+Live Application:
 https://mini-crm-lake.vercel.app
 
 Backend API:
@@ -15,36 +13,33 @@ https://mini-crm-server-l4s9.onrender.com
 GitHub Repository:
 https://github.com/nishandhineePalanivel/FUTURE_FS_02
 
-📌 About the Project
+About the Project
 
-The Client Lead Management System is a full-stack CRM application designed to manage customer inquiries received through a website contact form.
+The Client Lead Management System is a full-stack CRM application designed to help businesses manage customer inquiries and leads.
 
-When a potential customer submits the contact form, their information is stored in MongoDB Atlas. Authorized administrators can then log in to the CRM dashboard and manage the leads.
+When a potential customer submits an inquiry through the public contact form, the lead is stored in MongoDB and can be managed by an authorized administrator through the CRM dashboard.
 
-The system supports:
+The system allows administrators to:
 
-Lead collection
-Lead listing
-Lead status management
-Search and filtering
-Follow-up scheduling
-Follow-up notes
-Lead analytics
-Secure admin authentication
-Persistent database storage
-✨ Features
-🔐 Admin Authentication
+View leads
+Search leads
+Filter leads
+Update lead status
+Add follow-up notes
+Schedule follow-up dates
+View lead details
+Delete leads
+View dashboard analytics
+Features
+1. Admin Authentication
 Secure admin login
 JWT-based authentication
 Bcrypt password hashing
-Protected CRM dashboard
+Protected dashboard
 Protected lead management APIs
-Unauthorized users cannot access lead data
-📝 Public Contact Form
+2. Public Contact Form
 
-Visitors can submit new leads through the public contact form.
-
-Lead information includes:
+Visitors can submit:
 
 Name
 Email
@@ -52,18 +47,12 @@ Phone
 Company
 Message
 Lead Source
-📊 Dashboard Analytics
 
-The admin dashboard displays:
+Submitted information is stored in MongoDB.
 
-Total Leads
-New Leads
-Contacted Leads
-Converted Leads
-Conversion Rate
-📋 Lead Management
+3. Lead Management
 
-Admins can:
+Administrators can:
 
 View all leads
 Search leads
@@ -71,10 +60,9 @@ Filter leads
 View individual lead details
 Edit lead information
 Delete leads
-Track lead status
-🔄 Lead Status Management
+4. Lead Status
 
-The main lead pipeline is:
+The main lead workflow is:
 
 New → Contacted → Converted
 
@@ -82,15 +70,24 @@ Additional statuses:
 
 Follow-up
 Lost
-🗓️ Follow-up Management
+5. Follow-up Management
 
-Admins can:
+Administrators can:
 
 Schedule follow-up dates
 Add follow-up notes
 View previous notes
 Delete notes
-⏱️ Timestamp Tracking
+6. Dashboard Analytics
+
+The dashboard displays:
+
+Total Leads
+New Leads
+Contacted Leads
+Converted Leads
+Conversion Rate
+7. Timestamp Tracking
 
 The system tracks:
 
@@ -98,7 +95,7 @@ Lead creation date
 Lead update date
 Note creation date
 Last contacted date
-🛠️ Technology Stack
+Technology Stack
 Frontend
 React.js
 Vite
@@ -116,93 +113,99 @@ Authentication
 JSON Web Token (JWT)
 Bcrypt.js
 Deployment
-Vercel – Frontend
-Render – Backend
+Vercel
+Render
 Development Tools
 Visual Studio Code
 Git
 GitHub
 Postman
-🏗️ Project Structure
+Project Structure
 FUTURE_FS_02/
-│
-├── client/
-│   ├── public/
-│   └── src/
-│       ├── components/
-│       ├── context/
-│       ├── pages/
-│       ├── services/
-│       ├── App.jsx
-│       ├── main.jsx
-│       └── index.css
-│
-├── server/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── utils/
-│   ├── package.json
-│   └── server.js
-│
-├── .gitignore
-├── package.json
-├── vercel.json
-└── README.md
-🔌 API Endpoints
-Public API
-Create Lead
+|
+|-- client/
+|   |-- public/
+|   |-- src/
+|       |-- components/
+|       |-- context/
+|       |-- pages/
+|       |-- services/
+|       |-- App.jsx
+|       |-- main.jsx
+|       |-- index.css
+|   |-- package.json
+|   |-- index.html
+|   |-- vite.config.js
+|
+|-- server/
+|   |-- config/
+|   |-- controllers/
+|   |-- middleware/
+|   |-- models/
+|   |-- routes/
+|   |-- utils/
+|   |-- package.json
+|   |-- server.js
+|
+|-- .gitignore
+|-- package.json
+|-- vercel.json
+|-- README.md
+API Endpoints
+Public Endpoint
+
+Create a new lead:
+
 POST /api/leads
+Authentication
 
-Allows website visitors to submit a new lead.
+Admin login:
 
-Authentication APIs
-Admin Login
 POST /api/auth/login
 
-Authenticates the administrator and returns a JWT token.
+Verify admin:
 
-Verify Admin
 GET /api/auth/me
-
-Verifies the authenticated administrator.
-
 Protected Lead APIs
 
-Protected APIs require:
+All lead management APIs require JWT authentication.
 
-Authorization: Bearer <JWT_TOKEN>
-Get Analytics
+Get analytics:
+
 GET /api/leads/analytics/summary
-Get All Leads
+
+Get all leads:
+
 GET /api/leads
 
-Supports:
+Get individual lead:
 
-search
-status
-source
-page
-limit
-Get Lead
 GET /api/leads/:id
-Update Lead
+
+Update lead:
+
 PUT /api/leads/:id
-Update Lead Status
+
+Update lead status:
+
 PATCH /api/leads/:id/status
-Add Follow-up Note
+
+Add follow-up note:
+
 POST /api/leads/:id/notes
-Delete Follow-up Note
+
+Delete follow-up note:
+
 DELETE /api/leads/:id/notes/:noteId
-Delete Lead
+
+Delete lead:
+
 DELETE /api/leads/:id
-🗄️ Database
+Database
 
-The application uses MongoDB Atlas for persistent lead storage.
+The application uses MongoDB Atlas for persistent data storage.
 
-Each lead contains:
+Each lead can contain:
 
 Name
 Email
@@ -216,16 +219,13 @@ Follow-up Date
 Last Contacted Date
 Created Date
 Updated Date
-
-The database schema also validates important fields and restricts lead status values.
-
-⚙️ Installation
-1. Clone the Repository
+Installation
+Step 1: Clone the Repository
 git clone https://github.com/nishandhineePalanivel/FUTURE_FS_02.git
 cd FUTURE_FS_02
-2. Backend Setup
+Step 2: Backend Setup
 
-Go to the server folder:
+Navigate to the server folder:
 
 cd server
 
@@ -233,11 +233,7 @@ Install dependencies:
 
 npm install
 
-Create a file named:
-
-.env
-
-inside the server folder.
+Create a .env file inside the server folder.
 
 Add:
 
@@ -256,14 +252,14 @@ Start the backend:
 
 npm run dev
 
-Backend:
+Backend runs on:
 
 http://localhost:5000
-3. Frontend Setup
+Step 3: Frontend Setup
 
 Open another terminal.
 
-Go to the client folder:
+Navigate to the client folder:
 
 cd client
 
@@ -271,11 +267,7 @@ Install dependencies:
 
 npm install
 
-Create:
-
-.env
-
-inside the client folder.
+Create a .env file inside the client folder.
 
 Add:
 
@@ -285,10 +277,10 @@ Start the frontend:
 
 npm run dev
 
-Frontend:
+Frontend runs on:
 
 http://localhost:5173
-🔐 Environment Variables
+Environment Variables
 Backend
 PORT=5000
 MONGO_URI=<your-mongodb-connection-string>
@@ -299,22 +291,22 @@ CLIENT_URL=https://mini-crm-lake.vercel.app
 Frontend
 VITE_API_URL=https://mini-crm-server-l4s9.onrender.com/api
 
-Security: Never commit .env files, database credentials, passwords, JWT secrets, API keys, or other sensitive information to GitHub.
+Important: Never commit .env files, database credentials, passwords, JWT secrets, or API keys to GitHub.
 
-🚀 Deployment
-Frontend – Vercel
+Deployment
+Frontend
 
 The React frontend is deployed on Vercel.
 
-Live Application:
+Live URL:
 
 https://mini-crm-lake.vercel.app
 
-Backend – Render
+Backend
 
-The Node.js + Express backend is deployed on Render.
+The Node.js and Express backend is deployed on Render.
 
-Backend:
+Backend URL:
 
 https://mini-crm-server-l4s9.onrender.com
 
